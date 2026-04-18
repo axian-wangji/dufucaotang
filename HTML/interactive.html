@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>互动体验 - 杜甫草堂数字展馆</title>
+  <link rel="stylesheet" href="../CSS/interactive.css" />
+  <link rel="stylesheet" href="../CSS/dufu.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer@3.1.1/dist/model-viewer.min.js"></script>
+</head>
+<body>
+   <!-- 杜甫数字人悬浮助手 START -->
+<div id="dufu-assistant">
+  <!-- 悬浮球 -->
+  <div class="dufu-float-wrap">
+    <div class="dufu-float-ball" id="dufuFloatBall">
+      <div id="canvas-container" >
+        <model-viewer 
+        src="../dufu modle.glb" 
+        alt="杜甫3D模型"
+        auto-rotate
+        shadow-intensity="1"
+        camera-controls
+        style="width:100%; height:100%">>
+       
+      </model-viewer>
+      </div>
+
+      
+    </div>
+
+
+    <!-- 悬浮菜单 -->
+    <div class="dufu-hover-menu" id="dufuHoverMenu">
+      <button class="dufu-menu-item" data-action="chat">AI问答</button>
+      <button class="dufu-menu-item" data-action="search">杜诗检索</button>
+      <button class="dufu-menu-item" data-action="annotation">注释解析</button>
+      <button class="dufu-menu-item" data-action="recite">诗词朗诵</button>
+      <button class="dufu-menu-item" data-action="story">背景故事</button>
+    </div>
+  </div>
+
+  <!-- 对话面板 -->
+  <div class="dufu-panel" id="dufuPanel">
+    <div class="dufu-panel-header">
+      <div class="dufu-panel-title">
+        <div class="dufu-panel-avatar">杜</div>
+        <div>
+          <div class="title-main">杜甫数字人</div>
+          <div class="title-sub">AI讲解 / 杜诗检索 / 朗诵 / 背景故事</div>
+        </div>
+      </div>
+      <div class="dufu-panel-actions">
+        <button id="dufuMinBtn" title="最小化">—</button>
+        <button id="dufuCloseBtn" title="关闭">×</button>
+      </div>
+    </div>
+
+    <div class="dufu-tabs">
+      <button class="dufu-tab active" data-tab="chat">AI问答</button>
+      <button class="dufu-tab" data-tab="search">杜诗检索</button>
+      <button class="dufu-tab" data-tab="annotation">注释</button>
+      <button class="dufu-tab" data-tab="recite">朗诵</button>
+      <button class="dufu-tab" data-tab="story">背景</button>
+    </div>
+
+    <div class="dufu-panel-body">
+      <!-- AI问答 -->
+      <div class="dufu-tab-content active" id="tab-chat">
+        <div class="dufu-messages" id="dufuMessages">
+          <div class="dufu-msg assistant">
+            <div class="msg-bubble">
+              你好，我是杜甫数字人。你可以问我杜甫生平、诗作背景、诗句含义，也可以进行杜诗分类检索。
+            </div>
+          </div>
+        </div>
+        <div class="dufu-input-area">
+          <textarea id="dufuQuestion" placeholder="请输入问题，例如：请讲解《春望》的情感内涵"></textarea>
+          <button id="dufuSendBtn">发送</button>
+        </div>
+      </div>
+
+      <!-- 杜诗检索 -->
+      <div class="dufu-tab-content" id="tab-search">
+        <div class="dufu-form">
+          <input type="text" id="dufuSearchKeyword" placeholder="输入关键词，如：春望、爱国、成都、登高">
+          <select id="dufuSearchCategory">
+            <option value="">全部分类</option>
+            <option value="山水">山水</option>
+            <option value="忧国忧民">忧国忧民</option>
+            <option value="思乡">思乡</option>
+            <option value="边塞">边塞</option>
+            <option value="咏史">咏史</option>
+            <option value="写景">写景</option>
+            <option value="人生感怀">人生感怀</option>
+          </select>
+          <button id="dufuSearchBtn">检索</button>
+        </div>
+        <div class="dufu-result" id="dufuSearchResult">
+          请输入关键词或选择分类进行检索。
+        </div>
+      </div>
+
+      <!-- 注释 -->
+      <div class="dufu-tab-content" id="tab-annotation">
+        <div class="dufu-form vertical">
+          <textarea id="dufuAnnotationText" placeholder="请输入诗句，如：国破山河在，城春草木深"></textarea>
+          <button id="dufuAnnotationBtn">生成注释</button>
+        </div>
+        <div class="dufu-result" id="dufuAnnotationResult">
+          输入诗句后可查看字词注释、句意翻译和赏析。
+        </div>
+      </div>
+
+      <!-- 朗诵 -->
+      <div class="dufu-tab-content" id="tab-recite">
+        <div class="dufu-form vertical">
+          <textarea id="dufuReciteText" placeholder="请输入需要朗诵的诗词内容"></textarea>
+          <div class="dufu-inline-actions">
+            <button id="dufuReciteBtn">开始朗诵</button>
+            <button id="dufuStopReciteBtn">停止朗诵</button>
+          </div>
+        </div>
+        <div class="dufu-result" id="dufuReciteResult">
+          支持浏览器语音朗读；如需更高质量音色，可对接后端 TTS 接口。
+        </div>
+      </div>
+
+      <!-- 背景故事 -->
+      <div class="dufu-tab-content" id="tab-story">
+        <div class="dufu-form vertical">
+          <input type="text" id="dufuStoryTitle" placeholder="输入诗作名称，如：春望">
+          <button id="dufuStoryBtn">查看背景故事</button>
+        </div>
+        <div class="dufu-result" id="dufuStoryResult">
+          输入诗名后可查看创作背景、时代环境及作者心境。
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="background-container"></div>
+    <nav class="navbar">
+      <header class="header">
+        <nav class="nav">
+          <a href="../HTML/index.html">首页</a> 
+          <a href="../HTML/history.html">草堂历史</a> 
+          <a href="../HTML/architecture.html">建筑特色</a> 
+          <a href="../HTML/culture.html">文化价值</a> 
+          <a href="../HTML/guide.html">游览指南</a>
+          <a href="../HTML/interactive.html">互动体验</a>
+        </nav>
+    
+        <nav class="r-nav">
+          <a href="../HTML/login.html">登录</a>
+          <a href="../HTML/register.html">注册</a>
+          <button class="btn-3">
+              <img src="../IMG/searching.png" alt="搜索">
+          </button>
+          <button class="btn-3">
+              <img src="../IMG/chinese.png" alt="中文">
+          </button>
+          <button class="btn-3">
+            <img src="../IMG/english.png" alt="英文">
+          </button>
+          <button class="btn-3" id="back-to-top">
+          <img src="../IMG/backup.png"alt="回到顶部">
+          </button>
+       </nav>
+      </header>
+  </nav>
+  <h1 class="main-title"> 
+    <img src="../IMG/hudong.png" alt="杜甫草堂·互动体验">
+  </h1>
+  <main>
+    <section class="poem-form-section">
+      <h2>续写子美诗</h2>
+      <p class="prompt-text">尝试以杜甫笔法，写下你心中的草堂春雨、秋风或家国情怀。</p>
+
+      <form id="poemSubmissionForm">
+        <div class="form-group">
+          <label for="penName">笔名（可选）</label>
+          <input type="text" id="penName" name="penName" placeholder="如：浣花居士">
+        </div>
+        
+        <div class="form-group">
+        <label for="poemType">诗歌体裁</label>
+        <div class="custom-select" id="poemTypeContainer" tabindex="0">
+          <div class="select-selected">五言律诗</div>
+          <div class="select-items" style="display: none;">
+            <div class="select-item" data-value="五言律诗">五言律诗</div>
+            <div class="select-item" data-value="七言绝句">七言绝句</div>
+            <div class="select-item" data-value="自由体">自由体</div>
+          </div>
+        </div>
+        <input type="hidden" id="poemType" name="poemType" value="五言律诗">
+        </div>
+
+        <div class="form-group">
+          <label for="poemText">请输入您的诗句（最多200字）</label>
+          <textarea id="poemText" name="poemText" rows="5" maxlength="200" placeholder="例如：细雨润花径，孤舟泊岸西..."></textarea>
+          <div id="wordCount">已输入 0 / 200 字</div>
+        </div>
+
+        <div class="form-group ai-polish-row">
+          <label>
+            <span>希望获得格律与押韵建议（AI润色）</span>
+            <input type="checkbox" id="aiPolish"> 
+          </label>
+          <div id="polishTip" class="tip-text">• 提交后系统将分析平仄与用韵，助您贴近唐诗格律。</div>
+        </div>
+
+        <div class="form-group">
+          <label for="captcha">防机器人验证：请输入“草堂”</label>
+          <input type="text" id="captcha" name="captcha" required>
+        </div>
+
+        <div class="form-group1">
+            <button type="submit" class="btn-submit">投稿我的诗</button>
+        </div>
+      </form>
+
+      <div id="successMessage" class="success-message">
+        ✅ 投稿成功！您的诗已加入草堂数字诗集。
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>杜甫草堂</p>
+  </footer>
+  <script src="../JS/interavtive.js"></script>
+  <script src="../JS/dufu.js"></script>
+</body>
+</html>

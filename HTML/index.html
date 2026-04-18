@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>杜甫草堂 · 诗圣的居所</title>
+  <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/dufu.css">
+  <script type="module" src="https://unpkg.com/@google/model-viewer@3.1.1/dist/model-viewer.min.js"></script>
+</head>
+<body>
+  <!-- 杜甫数字人悬浮助手 START -->
+<div id="dufu-assistant">
+  <!-- 悬浮球 -->
+  <div class="dufu-float-wrap">
+    <div class="dufu-float-ball" id="dufuFloatBall">
+      <div id="canvas-container" >
+        <model-viewer 
+        src="../dufu modle.glb" 
+        alt="杜甫3D模型"
+        auto-rotate
+        shadow-intensity="1"
+        camera-controls
+        style="width:100%; height:100%">>
+       
+      </model-viewer>
+      </div>
+
+      
+    </div>
+      <!-- 悬浮菜单 -->
+      <div class="dufu-hover-menu" id="dufuHoverMenu">
+        <button class="dufu-menu-item" data-action="chat">AI问答</button>
+        <button class="dufu-menu-item" data-action="search">杜诗检索</button>
+        <button class="dufu-menu-item" data-action="annotation">注释解析</button>
+        <button class="dufu-menu-item" data-action="recite">诗词朗诵</button>
+        <button class="dufu-menu-item" data-action="story">背景故事</button>
+      </div>
+    </div>
+  
+    <!-- 对话面板 -->
+    <div class="dufu-panel" id="dufuPanel">
+      <div class="dufu-panel-header">
+        <div class="dufu-panel-title">
+          <div class="dufu-panel-avatar">杜</div>
+          <div>
+            <div class="title-main">杜甫数字人</div>
+            <div class="title-sub">AI讲解 / 杜诗检索 / 朗诵 / 背景故事</div>
+          </div>
+        </div>
+        <div class="dufu-panel-actions">
+          <button id="dufuMinBtn" title="最小化">—</button>
+          <button id="dufuCloseBtn" title="关闭">×</button>
+        </div>
+      </div>
+  
+      <div class="dufu-tabs">
+        <button class="dufu-tab active" data-tab="chat">AI问答</button>
+        <button class="dufu-tab" data-tab="search">杜诗检索</button>
+        <button class="dufu-tab" data-tab="annotation">注释</button>
+        <button class="dufu-tab" data-tab="recite">朗诵</button>
+        <button class="dufu-tab" data-tab="story">背景</button>
+      </div>
+  
+      <div class="dufu-panel-body">
+        <!-- AI问答 -->
+        <div class="dufu-tab-content active" id="tab-chat">
+          <div class="dufu-messages" id="dufuMessages">
+            <div class="dufu-msg assistant">
+              <div class="msg-bubble">
+                你好，我是杜甫数字人。你可以问我杜甫生平、诗作背景、诗句含义，也可以进行杜诗分类检索。
+              </div>
+            </div>
+          </div>
+          <div class="dufu-input-area">
+            <textarea id="dufuQuestion" placeholder="请输入问题，例如：请讲解《春望》的情感内涵"></textarea>
+            <button id="dufuSendBtn">发送</button>
+          </div>
+        </div>
+  
+        <!-- 杜诗检索 -->
+        <div class="dufu-tab-content" id="tab-search">
+          <div class="dufu-form">
+            <input type="text" id="dufuSearchKeyword" placeholder="输入关键词，如：春望、爱国、成都、登高">
+            <select id="dufuSearchCategory">
+              <option value="">全部分类</option>
+              <option value="山水">山水</option>
+              <option value="忧国忧民">忧国忧民</option>
+              <option value="思乡">思乡</option>
+              <option value="边塞">边塞</option>
+              <option value="咏史">咏史</option>
+              <option value="写景">写景</option>
+              <option value="人生感怀">人生感怀</option>
+            </select>
+            <button id="dufuSearchBtn">检索</button>
+          </div>
+          <div class="dufu-result" id="dufuSearchResult">
+            请输入关键词或选择分类进行检索。
+          </div>
+        </div>
+  
+        <!-- 注释 -->
+        <div class="dufu-tab-content" id="tab-annotation">
+          <div class="dufu-form vertical">
+            <textarea id="dufuAnnotationText" placeholder="请输入诗句，如：国破山河在，城春草木深"></textarea>
+            <button id="dufuAnnotationBtn">生成注释</button>
+          </div>
+          <div class="dufu-result" id="dufuAnnotationResult">
+            输入诗句后可查看字词注释、句意翻译和赏析。
+          </div>
+        </div>
+  
+        <!-- 朗诵 -->
+        <div class="dufu-tab-content" id="tab-recite">
+          <div class="dufu-form vertical">
+            <textarea id="dufuReciteText" placeholder="请输入需要朗诵的诗词内容"></textarea>
+            <div class="dufu-inline-actions">
+              <button id="dufuReciteBtn">开始朗诵</button>
+              <button id="dufuStopReciteBtn">停止朗诵</button>
+            </div>
+          </div>
+          <div class="dufu-result" id="dufuReciteResult">
+            支持浏览器语音朗读；如需更高质量音色，可对接后端 TTS 接口。
+          </div>
+        </div>
+  
+        <!-- 背景故事 -->
+        <div class="dufu-tab-content" id="tab-story">
+          <div class="dufu-form vertical">
+            <input type="text" id="dufuStoryTitle" placeholder="输入诗作名称，如：春望">
+            <button id="dufuStoryBtn">查看背景故事</button>
+          </div>
+          <div class="dufu-result" id="dufuStoryResult">
+            输入诗名后可查看创作背景、时代环境及作者心境。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar">
+    <header class="header">
+      <nav class="nav">
+        <a href="../HTML/index.html">首页</a> 
+        <a href="../HTML/history.html">草堂历史</a> 
+        <a href="../HTML/architecture.html">建筑特色</a> 
+        <a href="../HTML/culture.html">文化价值</a> 
+        <a href="../HTML/guide.html">游览指南</a>
+        <a href="../HTML/interactive.html">互动体验</a>
+      </nav>
+  
+      <nav class="r-nav">
+        <a href="../HTML/login.html">登录</a>
+        <a href="../HTML/register.html">注册</a>
+        <button class="btn-3">
+            <img src="../IMG/searching.png" alt="搜索">
+        </button>
+        <button class="btn-3">
+            <img src="../IMG/chinese.png" alt="中文">
+        </button>
+        <button class="btn-3">
+          <img src="../IMG/english.png" alt="英文">
+        </button>
+        <button class="btn-3" id="back-to-top">
+        <img src="../IMG/backup.png"alt="回到顶部">
+        </button>
+     </nav>
+    </header>
+  </nav>
+   
+  <section class="hero">
+    <h1 class="main-title">
+      <img src="../IMG/dufucaotang.png" alt="杜甫草堂">
+    </h1>
+    <h2 class="subtitle">诗圣的居所 · 东方的诗意栖居</h2>
+    <p class="intro">
+      杜甫草堂位于四川省成都市浣花溪畔，是唐代大诗人杜甫流寓成都时的居所。自公元759年建茅屋起，历经千年沧桑，多次修缮重建，如今已成为中国文学圣地与国家级重点文物保护单位。
+    </p>
+    <div class="cta-buttons">
+      <a href="../HTML/architecture.html" class="btn">探秘建筑之美</a>
+      <a href="../HTML/culture.html" class="btn">感受文化传承</a>
+    </div>
+  </section>
+
+  <section class="carousel">
+    <div class="slide active"><img src="../IMG/spring1.jpg" alt="春景"></div>
+    <div class="slide"><img src="../IMG/summer1.jpg" alt="夏景"></div>
+    <div class="slide"><img src="../IMG/autumn1.jpg" alt="秋景"></div>
+    <div class="slide"><img src="../IMG/winter1.jpg" alt="冬景"></div>
+  </section>
+
+  <section class="features">
+    <h3 class="section-title">快速入口卡牌</h3>
+    <div class="card-container">
+      <div class="card">
+        <h4>历史沿革</h4>
+        <p>为于浣花溪畔，结茅而居，安身立命之所。历经千载，见证兴衰。</p>
+        <a href="../HTML/history.html" class="card-btn">查看详情 > </a>
+      </div>
+      <div class="card">
+        <h4>建筑之美</h4>
+        <p>三进院落，取之自然，用之有道。茅屋竹篱，尽显古韵。</p>
+        <a href="../HTML/architecture.html" class="card-btn">查看详情 > </a>
+      </div>
+      <div class="card">
+        <h4>文化传承</h4>
+        <p>诗圣精神，薪火相传。后人敬仰，文脉永续。</p>
+        <a href="../HTML/culture.html" class="card-btn">查看详情 > </a>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>杜甫草堂</p>
+  </footer>
+  <script src="../JS/dufu.js"></script>
+</body>
+</html>
